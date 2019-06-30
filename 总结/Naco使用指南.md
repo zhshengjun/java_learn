@@ -17,6 +17,7 @@
     用户名/密码：xxx/xx
     server-addr:
     ```
+	
 
 # <font size = 4>应用接入 Nacos </font>
 ## <font size = 3>Nacos 的服务注册与发现</font>
@@ -61,8 +62,8 @@ spring.cloud.nacos.discovery.server-addr= xxx
 在 SpringBoot 启动类上添加 <font color=#e96900> @EnableDiscoveryClient</font>；但不是必须的。只要添加了<font color=#e96900> spring-cloud-starter-alibaba-nacos-discovery </font> 依赖，就会自动注册到 Nacos 上。
 
 ```
-EnableDiscoveryClient
-SpringBootApplication
+@EnableDiscoveryClient
+@SpringBootApplication
 public class NacosClientApplication {
      ...
 }
