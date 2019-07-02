@@ -23,7 +23,6 @@ nacos 的基本安装使用也很简单,这里推荐查看 @程序猿DD 的文�
 ```
 code:503 msg: server is STARTING now, please try again later!
 ```
-
 该问题分为两个类别:
 
 ## 同一网段
@@ -44,7 +43,7 @@ code:503 msg: server is STARTING now, please try again later!
 > 
 > 
 
-以上使用内网的三台Nacos服务进行集群, 注意是内网,内网,内网 !
+以上使用内网的三台 Nacos 服务进行集群, 注意是内网,内网,内网 !
 
 **问题描述:**
 按照官网文档修改了cluster.conf,添加了三台服务的IP(172.XX.XX.6:8848, 172.XX.XX.7:8848,
@@ -74,7 +73,7 @@ code:503 msg: server is STARTING now, please try again later!
 ```
 
 从 [Nacos集群模式下服务无法注册](https://www.wandouip.com/t5i92492/) 这篇文章的到一定的帮助, 并解决该问题.
-深层的原因： 在大多数Linux操作系统中，都是以/etc/hosts中的配置查找主机名的，而Java 的InetAddress.java 调用 InetAddressImpl.java 的 public native String getLocalHostName() throws UnknownHostException; 来获取本地主机名，Java 的这个方法是native的，是本地系统的一个实现，此时根据本地/etc/hostname文件中的机器名来获取本机IP，然而这个IP并不是这台机器的内网IP，所以这篇文章是通过修改本机名称和本机IP来解决 .
+深层的原因： 在大多数Linux操作系统中，都是以/etc/hosts中的配置查找主机名的，而 Java 的InetAddress.java 调用 InetAddressImpl.java 的 public native String getLocalHostName() throws UnknownHostException; 来获取本地主机名，Java 的这个方法是 native 的，是本地系统的一个实现，此时根据本地/etc/hostname文件中的机器名来获取本机 IP，然而这个 IP 并不是这台机器的内网 IP，所以这篇文章是通过修改本机名称和本机IP来解决 .
 
 ## 不同网段
 
@@ -96,7 +95,7 @@ code:503 msg: server is STARTING now, please try again later!
 > 
 > 
 
-像阿里云、腾讯云这种云服务器, 会提供一个外网ip和内网ip, 访问外网ip时会指向对应的内网ip来访问到该服务器, 由于nacos集群内部是指定的使用网卡ip地址来进行通信,但是由于三台服务器各自的内网ip不在同一网段, 所以造成无法通信, 也会造成以下问题
+像阿里云、腾讯云这种云服务器, 会提供一个外网 ip 和内网 ip, 访问外网 ip 时会指向对应的内网 ip 来访问到该服务器, 由于 nacos 集群内部是指定的使用网卡ip地址来进行通信,但是由于三台服务器各自的内网 ip 不在同一网段, 所以造成无法通信, 也会造成以下问题
 
 注册服务:
 
@@ -112,7 +111,7 @@ naming-raft.log 日志:
 
 ```
 
-这个问题找了很久, 最后源码发现可以通过设置ip地址的参数来自己指定使用的ip地址
+这个问题找了很久, 最后源码发现可以通过设置 ip 地址的参数来自己指定使用的 ip 地址
 
 ``` java
 private static String getHostAddress() {
@@ -125,7 +124,7 @@ private static String getHostAddress() {
 		...
 }
 ```
-这时只要修改启动参数, 设置本机ip地址就可以了
+这时只要修改启动参数, 设置本机 ip 地址就可以了
 修改 nacos/bin/startup.sh 文件
 找到 JVM Configuration 这部分, 在集群参数里增加 -Dnacos.server.ip=xx
 
