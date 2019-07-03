@@ -6,13 +6,13 @@
 ![Nacos集群示意](https://i.loli.net/2019/06/27/5d145f4104b2426890.png)
 
 - 测试环境<br>
-    ```
+    ```java
     Nacos 管理地址：xxxx
     用户名/密码：xxx/xx
     server-addr:
     ```
 - 生产环境<br>
-    ```
+    ```java
     Nacos 管理地址：xxxx
     用户名/密码：xxx/xx
     server-addr:
@@ -23,7 +23,7 @@
 ## <font size = 3>Nacos 的服务注册与发现</font>
 ### <font size = 2>1. 编辑pom.xml，加入必要的依赖配置</font>
 
-```
+```xml
  <dependencyManagement>
         <dependencies>
             <dependency>
@@ -49,7 +49,7 @@
 
 ### <font size = 2>2. 配置服务名称和 Nacos 地址</font>
 
-```
+```java
 spring.application.name= xxx
 #使用 Nacos 作为服务注册中心
 spring.cloud.nacos.discovery.server-addr= xxx
@@ -61,7 +61,7 @@ spring.cloud.nacos.discovery.server-addr= xxx
 ### <font size = 2>3. 添加注解</font>
 在 SpringBoot 启动类上添加 <font color=#e96900> @EnableDiscoveryClient</font>；但不是必须的。只要添加了<font color=#e96900> spring-cloud-starter-alibaba-nacos-discovery </font> 依赖，就会自动注册到 Nacos 上。
 
-```
+```java
 @EnableDiscoveryClient
 @SpringBootApplication
 public class NacosClientApplication {
@@ -81,10 +81,10 @@ public class NacosClientApplication {
 
 
 
-## <font size = 2>Nacos 作为配置中心</font>
+## <font size = 4>Nacos 作为配置中心</font>
 ### <font size = 2>1. 编辑pom.xml，加入必要的依赖配置</font>
 
-```
+```xml
 <!-- spring-cloud-alibaba-dependencies 依赖同注册中心 -->
     <dependency>
         <groupId>org.springframework.cloud</groupId>
@@ -93,7 +93,7 @@ public class NacosClientApplication {
 ```
 ### <font size = 2>2. 修改配置</font>
 
-```
+```java
 spring.cloud.nacos.config.server-addr= xxx
 ```
 <font color=red size = 4>注意：</font>
@@ -102,7 +102,7 @@ spring.cloud.nacos.config.server-addr= xxx
 
 ### <font size = 2>3. 添加注解</font>
 在 引入配置文件的类上增加 <font color=#e96900>@RefreshScope</font> 注解，表示这个类下的配置内容支持动态刷新
-```
+```java
 @RefreshScope
 public class NacosClientController {
     @Value("${value}")
@@ -187,7 +187,7 @@ spring.cloud.nacos.config.group=DEV_GROUP
 
 ### <font size = 2>加载多个配置</font>
 
-```
+```java
 spring.cloud.nacos.config.ext-config[0].data-id=db.properties
 spring.cloud.nacos.config.ext-config[0].group=DEFAULT_GROUP
 spring.cloud.nacos.config.ext-config[0].refresh=true
@@ -195,7 +195,7 @@ spring.cloud.nacos.config.ext-config[0].refresh=true
 ```
 ### <font size = 2>共享配置</font>
 
-```
+```javascript
 spring.cloud.nacos.config.shared-dataids=actuator.properties,log.properties
 spring.cloud.nacos.config.refreshable-dataids=actuator.properties,log.properties
 ```
@@ -214,7 +214,7 @@ spring.cloud.nacos.config.refreshable-dataids=actuator.properties,log.properties
 <font color=red size=3>优先级关系是：A < B < C </font>
 # <font size = 4>Nacos 替换 Eureka</font>
 1. 添加 Nacos 的依赖，同时去掉 Eureka依赖<br>
-    ```
+    ```xml
 	 <dependencies>
 		    <dependency>
 	            <groupId>org.springframework.cloud</groupId>
