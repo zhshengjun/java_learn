@@ -34,7 +34,7 @@ docker run --name mysql -p 3306:3306 \
 
 ```
 ```docker
-docker run  --name mysql -p 3306:3306  \
+docker run  --name mysql -p 3306:3306  restart: always \
 -v /home/docker/mysql/data:/var/lib/mysql \
 -e MYSQL_USER="stupidzhang" -e MYSQL_PASSWORD="Zm19930607" -e MYSQL_ROOT_PASSWORD="Zm19930607" \
 -d mysql:5.7 --character-set-server=utf8 --collation-server=utf8_general_ci;
@@ -69,10 +69,19 @@ docker volume prune
 
 ### b3log
 ```docker
-docker run -it --name mysql -p 3306:3306  \
--v /home/docker/mysql/data:/var/lib/mysql \
--e MYSQL_USER="stupidzhang" -e MYSQL_PASSWORD="Zm19930607" -e MYSQL_ROOT_PASSWORD="Zm19930607" \
--d mysql:5.7 --character-set-server=utf8 --collation-server=utf8_general_ci;
+docker run --detach --name solo --network=host \
+    --env RUNTIME_DB="MYSQL" \
+    --env JDBC_USERNAME="root" \
+    --env JDBC_PASSWORD="Zm19930607" \
+    --env JDBC_DRIVER="com.mysql.cj.jdbc.Driver" \
+    --env JDBC_URL="jdbc:mysql://118.31.61.143:3306/solo?useUnicode=yes&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC" \
+    b3log/solo --listen_port=80 --server_scheme=http --server_host=solo.stupidzhang.com --server_port=
+
+
+作者：88250
+链接：https://hacpai.com/article/1492881378588
+来源：黑客派
+协议：CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0/
 
 ```
 
