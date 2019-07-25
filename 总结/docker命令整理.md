@@ -3,18 +3,34 @@
 ```docker
 docker run -p 80:80 --name nginx  \
 -v /home/docker/nginx/www:/www -v \
-/home/docker/nginx/config/conf.d:/etc/nginx/nginx.conf --privileged=true \
+/home/docker/nginx/config/conf.d/nginx.conf:/etc/nginx/nginx.conf --privileged=true \
 -v /home/docker/nginx/logs:/www/logs \
 -d nginx;
 ```
-
+--rm
 ```docker
-docker run -it -p 80:80 --name nginx \
+docker run  -p 80:80 -p 443:443 --name nginx \
 --restart=on-failure:10 \
 -v /usr/local/hexo/public:/usr/share/nginx/html \
 -v /home/docker/nginx/config/conf.d/nginx.conf:/etc/nginx/nginx.conf \
 -v /home/docker/nginx/logs:/www/logs \
 --privileged=true  -d nginx;
+```
+```docker
+docker run  -p 443:443 --name nginx \
+--restart=on-failure:10 \
+-v /usr/local/hexo/public:/usr/share/nginx/html \
+-v /home/docker/nginx/config/conf.d/nginx.conf:/etc/nginx/nginx.conf \
+-v /home/docker/nginx/logs:/www/logs \
+--privileged=true  -d nginx;
+
+```docker
+docker run -d  -p 80:80 -p 443:443 --name nginx \
+-v /home/docker/nginx/nginx.conf:/etc/nginx/nginx.conf \
+-v /home/docker/nginx/conf.d:/etc/nginx/conf.d \
+-v /home/docker/nginx/logs:/var/log/nginx \
+-v /home/docker/nginx/cert:/etc/nginx/cert \
+nginx
 ```
 
 ### redis 启动
@@ -69,19 +85,13 @@ docker volume prune
 
 ### b3log
 ```docker
-docker run --detach --name solo --network=host \
+docker run -d --name solo --network=host  \
     --env RUNTIME_DB="MYSQL" \
     --env JDBC_USERNAME="root" \
     --env JDBC_PASSWORD="Zm19930607" \
     --env JDBC_DRIVER="com.mysql.cj.jdbc.Driver" \
     --env JDBC_URL="jdbc:mysql://118.31.61.143:3306/solo?useUnicode=yes&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC" \
-    b3log/solo --listen_port=80 --server_scheme=http --server_host=solo.stupidzhang.com --server_port=
-
-
-作者：88250
-链接：https://hacpai.com/article/1492881378588
-来源：黑客派
-协议：CC BY-SA 4.0 https://creativecommons.org/licenses/by-sa/4.0/
+    b3log/solo --listen_port=8080 --server_scheme=http --server_host=solo.stupidzhang.com --server_port=  
 
 ```
 
