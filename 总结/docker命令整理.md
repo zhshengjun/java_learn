@@ -248,4 +248,41 @@ docker run --detach --name solo --network=host \
 --env JDBC_PASSWORD="Zm19930607" \
 --env JDBC_DRIVER="com.mysql.cj.jdbc.Driver" \
 --env JDBC_URL="jdbc:mysql://118.31.61.143:3306/solo?useUnicode=yes&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC" \
-b3log/solo --listen_port=8082 --server_scheme=http --server_host=www.stupidzhang.com
+--volume /home/docker/solo/skins/:/opt/solo/skins/  \
+b3log/solo --listen_port=8082 --server_scheme=http --server_host=solo.stupidzhang.com
+
+--volume /home/docker/solo/skins/:/opt/solo/skins/ \
+
+
+docker cp nginx:/etc/nginx/nginx.conf /home/docker/nginx/conf/nginx.conf
+
+docker cp nginx:/etc/nginx/conf.d /home/docker/nginx/conf/conf.d
+
+
+docker run -d -p 80:80 -p 443:443 --name nginx \
+-v /home/docker/nginx/conf/nginx.conf:/etc/nginx/nginx.conf \
+-v /home/docker/nginx/conf/conf.d:/etc/nginx/conf.d \
+-v /home/docker/nginx/www:/usr/share/nginx/html \
+-v /home/docker/nginx/ssl:/ssl/ \
+-v /home/docker/nginx/logs:/var/log/nginx \
+nginx
+
+docker run -d -p 80:80 -p 443:443 --name nginx \
+-v /dockerData/nginx/conf/nginx.conf:/etc/nginx/nginx.conf \
+-v /dockerData/nginx/conf/conf.d:/etc/nginx/conf.d \
+-v /home/docker/nginx/ssl:/ssl/ \
+-v /dockerData/nginx/www:/usr/share/nginx/html \
+-v /dockerData/nginx/logs:/var/log/nginx \
+nginx 
+
+
+docker run --detach --name pipe --network=host \
+b3log/pipe --mysql="root:Zm19930607@(127.0.0.1:3306)/pipe?charset=utf8mb4&parseTime=True&loc=Local" \
+--runtime_mode=prod --port=8088 --server=http://pipe.stupidzhang.com
+
+
+docker run --detach --name pipe --network=host \
+b3log/pipe --mysql="root:Zm19930607@(127.0.0.1:3306)/pipe?charset=utf8mb4&parseTime=True&loc=Local" \
+--runtime_mode=prod --port=5897 --server=http://localhost:5897
+
+
